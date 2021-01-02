@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Practice code written while reviewing pep257
-docstring convention and def vs lambda functions
+docstring convention and def vs lambda functions.
 
 Created on Wed Dec 30 04:30:57 2020
 
