@@ -52,8 +52,8 @@ for i in range(2**N): # 0, 1, 2 ...
         if (i >> j) % 2 == 1: # shift the bits by length. whole number check
             combo.append(items[j]) # append the item found at this bit
             print('APPEND triggered. Item appended: ', items[j])
-        print('j iteration ', j, 'ending with combo result of ', combo)
-    print('ITERATION ENDING... loop yield is ', combo)
+        print('(j)TERATION ', j, 'ending... combo result of ', combo)
+    print('(i)TERATION ', i, ' ending... loop yield is ', combo)
     print()
 for i in range(3**N):
     print()
@@ -69,3 +69,38 @@ for i in range(3**N):
             combo.append(items[j])
         print('j iteration ', j, 'ending with combo result of ', combo)
     print(combo)
+    
+# a recursive call to place a single item into all 3 bags, yielding each time
+items = ['A','B','C']
+
+ground = []
+bag1 = []
+bag2 = []
+combo = (ground, bag1, bag2)
+def rplace(items, ground, bag1, bag2, combo):
+    itemhotseat = items
+    combohotseat = combo
+    for i in range(len(items))
+        itemhotseat = items[i]    
+        
+        for t in range(2):
+            combohotseat[t].append(itemhotseat[0]) # place it
+                
+            else len(items) >= 1:
+            
+            del(items[0]) # remove the target item, it has been placed
+        yield (combohotseat[1], combohotseat[2])
+
+# a recursive call to place a single item into all 3 bags, yielding each time
+items = ['A', 'B','C']
+ground = []
+bag1 = []
+bag2 = []
+combo = (ground, bag1, bag2)
+def rplacesingle(items):
+    for p in range(2):
+        combo[p].append(items[0]) # place it
+        del(items[0]) # remove the target item, it has been placed
+        if len(items) >= 1:
+            
+        yield (bag1, bag2)
