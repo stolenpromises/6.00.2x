@@ -109,5 +109,5 @@ for i in nodes:# iterate over the node entries
     for checknode in nodes:# iterate over the node entries
         if str(checknode) == middleleft or str(checknode) == middleright:# check for a valid permutation
             # initiate the edge via the digraph method
-            #g.self passed in, followed by the subclass
+            # g.self passed in, followed by the subclass
             Digraph.addEdge(g, Edge(i, checknode))
