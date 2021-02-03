@@ -33,43 +33,34 @@ def greedy_cow_transport(input_dict, cargo_limit):
 
     Returns
     -------
-    list_of_lists : list
+    cargo_history : list
         A list of lists. Each inner list represents a round trip transport
         operation. Payloads are identified via unique_payload parameter passed
         in at runtime. Each trip orders heavier payloads first. Arbitrary
         tiebreak and trip order.
             example:
-                list_of_lists = [[pl1, pl2], [pl3, pl4]]
+                cargo_history = [[pl1, pl2], [pl3, pl4]]
     """
 
-
     # convert the input dictionary into a dictionary sorted by weight
-    sorted_dict = input_dict.
-    itertools.combinations(input_dict, r)
-    dict.items
-    sorted()
-    
+    sorted_dict = {key: value for (key, value) in sorted(sample.items())}
+    cargo_history = []  # initiate the list of lists
+    # run a takeoff loop as long as there is remaining payload
+    while sorted_dict != {}:
+        # plane landed empty
+        cargo = []
+        cargo_weight = cargo_limit
+        dict_trash_que = []  # prep a trash que for payload that we load
+        # load payload biggest to smallest and don't exceed the cargo limit
+        for i in sorted_dict:  # loop over remaining payload
+            if sorted_dict[i] <= cargo_weight:  # cargo room for payload
+                cargo.append(i)  # add the payload to cargo
+                cargo_weight += sorted_dict[i]  # add the payload weight
+        for i in dict_trash_que:  # remove loaded payload
+            del(sorted_dict[i])  # payload accounted for... remove
+        cargo_history.append(cargo)  # record the delivery
+
 # sample dictionary for testing
-sample = {'lpha': 550, 'beta': 1000}
-print(sorted(sample))
-print(sample['beta'])
-for i in sample:
-    print(i)
-print(sample.values())
-sample.items()
-
-sorted_dict = {key:value for (key,value) in sorted(sample.items())}
-
-PyDict_Copy(sample)
-sample.copy
-sorted(sample, key=sample.__getitem__)
-sorted_dict[key, value for (key, value) in sorted(sample.items())]
-[[key, value] for (key, value) in sorted(sample.items())]
-
-dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5}
-# Double each value in the dictionary
-double_dict1 = {k:v*2 for (k,v) in dict1.items()}
-print(double_dict1)
-
-{'e': 10, 'a': 2, 'c': 6, 'b': 4, 'd': 8}
-
+sample = {"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}
+samplelimit = 10
+print(greedy_cow_transport(sample, samplelimit))
