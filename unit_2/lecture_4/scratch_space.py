@@ -107,3 +107,63 @@ plt.plot(mySamples, myCubic, label='cubic')
 plt.plot(mySamples, myExponential, label='exponential')
 plt.legend()  # let pylab place the legend location automatically
 plt.title('Cubic vs. Exponential')
+
+# changing the data display
+plt.figure('lin quad')  # set the active frame
+plt.clf()  # clear that frame
+plt.plot(mySamples, myLinear, 'b-', label='linear')  # b_: set color black
+plt.plot(mySamples, myQuadratic, 'ro', label='quadratic')  # _o circle line
+plt.legend(loc='upper left')
+plt.title('Linear vs. Quadratic')
+plt.figure('cube exp')
+plt.clf()
+plt.plot(mySamples, myCubic, 'g^', label='cubic')  # _^ triangle
+plt.plot(mySamples, myExponential, 'r--', label='exponential')  # _-- dash
+plt.legend()
+plt.title('Cubic vs. Exponential')
+
+# change linewidth
+plt.figure('lin quad')
+plt.clf()
+# pixel size on the graph
+plt.plot(mySamples, myLinear, 'b-', label='linear', linewidth=2.0)
+plt.plot(mySamples, myQuadratic, 'r', label='quadratic', linewidth=3.0)
+plt.legend(loc='upper left')
+plt.title('Linear vs. Quadratic')
+
+# subplots within a single frame
+plt.figure('lin quad')
+plt.clf()
+plt.subplot(211)  # (rows|columns|location)
+plt.ylim(0, 900)
+plt.plot(mySamples, myLinear, 'b-', label='linear', linewidth=2.0)
+plt.subplot(212)  # (two rows|1 column|spot 2 in the subplot
+plt.ylim(0, 900)
+plt.plot(mySamples, myQuadratic, 'r', label='quadratic', linewidth=3.0)
+plt.legend(loc='upper left')
+plt.title('Linear vs. Quadratic')
+plt.figure('cube exp')
+plt.clf()
+plt.subplot(121)
+plt.ylim(0, 140000)
+plt.plot(mySamples, myCubic, 'g--', label='cubic', linewidth=4.0)
+plt.subplot(122)
+plt.ylim(0, 140000)
+plt.plot(mySamples, myExponential, 'r', label='exponential', linewidth=5.0)
+plt.legend()
+plt.title('Cubic vs. Exponential')
+
+# linear vs logarithmic
+plt.figure('cube exp log')
+plt.clf()
+plt.plot(mySamples, myCubic, 'g--', label='cubic', linewidth=2.0)
+plt.plot(mySamples, myExponential, 'r', label='exponential', linewidth=4.0)
+plt.yscale('log')  # logarithmic scale on the y axis only
+plt.legend()
+plt.title('Cubic vs. Exponential')
+plt.figure('cube exp linear')
+plt.clf()
+plt.plot(mySamples, myCubic, 'g--', label='cubic', linewidth=2.0)
+plt.plot(mySamples, myExponential, 'r', label='exponential', linewidth=4.0)
+plt.legend()
+plt.title('Cubic vs. Exponential')
