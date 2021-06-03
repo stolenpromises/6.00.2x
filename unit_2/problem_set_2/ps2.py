@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 A problem set designed to practice:
-    
+
     1. Designing a simulation
     2. Implementing a program that uses classes
-    
+
 Created on Sat May 29 19:53:33 2021
 
 @author: nathan.m
@@ -14,34 +14,38 @@ Created on Sat May 29 19:53:33 2021
 
 import math
 import random
-
 import ps2_visualize
 import pylab
+import numpy as np
 
 # For Python 3.6:
 from ps2_verify_movement36 import testRobotMovement
+# If you get a "Bad magic number" ImportError, you are not using Python 3.6
 
 # === Provided class Position
+
+
 class Position(object):
-    """
-    A Position represents a location in a two-dimensional room.
-    """
+    """A Position represents a location in a two-dimensional room."""
+
     def __init__(self, x, y):
-        """
-        Initializes a position with coordinates (x, y).
-        """
+        """Initialize a position with coordinates (x, y)."""
         self.x = x
         self.y = y
-        
+
     def getX(self):
+        """Return x position."""
         return self.x
-    
+
     def getY(self):
+        """Return y position."""
+        print('gety called')
         return self.y
-    
+
     def getNewPosition(self, angle, speed):
-        """
-        Computes and returns the new Position after a single clock-tick has
+        """Compute and return a new positon after a move.
+
+        Compute and return the new Position after a single clock-tick has
         passed, with this object as the current position, and with the
         specified angle and speed.
 
@@ -55,46 +59,53 @@ class Position(object):
         old_x, old_y = self.getX(), self.getY()
         angle = float(angle)
         # Compute the change in position
-        delta_y = speed * math.cos(math.radians(angle))
-        delta_x = speed * math.sin(math.radians(angle))
+        delta_y = speed * math.cos(math.radians(angle))  # run
+        delta_x = speed * math.sin(math.radians(angle))  # rise
         # Add that to the existing position
         new_x = old_x + delta_x
         new_y = old_y + delta_y
         return Position(new_x, new_y)
 
-    def __str__(self):  
+    def __str__(self):
+        """Enable the current position to be printed."""
         return "(%0.2f, %0.2f)" % (self.x, self.y)
 
 
 # === Problem 1
 class RectangularRoom(object):
-    """
-    A RectangularRoom represents a rectangular region containing clean or dirty
-    tiles.
+    """Represents a rectangular region containing clean or dirty tiles.
 
     A room has a width and a height and contains (width * height) tiles. At any
     particular time, each of these tiles is either clean or dirty.
     """
+
     def __init__(self, width, height):
-        """
-        Initializes a rectangular room with the specified width and height.
+        """Initializee a rectangular room with the specified width and height.
 
         Initially, no tiles in the room have been cleaned.
 
         width: an integer > 0
         height: an integer > 0
         """
-        raise NotImplementedError
-    
+        self.width = width
+        self.height = height
+        # initialize a blank array dirty tiles(int of 0)
+        self.arr = np.zeros((self.width, self.height))
+
+    def __str__(self):
+        """Return a print representation for the class."""
+        return (str(print(self.arr)))
+
     def cleanTileAtPosition(self, pos):
         """
-        Mark the tile under the position POS as cleaned.
+        Mark the tile under the position POS as cleaned(int of 1).
 
         Assumes that POS represents a valid position inside this room.
 
-        pos: a Position
+        pos: a Position object
         """
-        raise NotImplementedError
+        # round float coordinates down and set tile to int of 1
+        self.arr[math.floor(pos.x)][math.floor(pos.y)] = 1
 
     def isTileCleaned(self, m, n):
         """
@@ -106,15 +117,19 @@ class RectangularRoom(object):
         n: an integer
         returns: True if (m, n) is cleaned, False otherwise
         """
-        raise NotImplementedError
-    
+        # round float coordinates down and check the queried tile
+        if self.arr[math.floor(m)][math.floor(n)] == 1:
+            return True  # it is clean
+        else:
+            return False  # it is dirty
+
     def getNumTiles(self):
         """
         Return the total number of tiles in the room.
 
         returns: an integer
         """
-        raise NotImplementedError
+        return self.width * self.height
 
     def getNumCleanedTiles(self):
         """
@@ -122,7 +137,11 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
+        cleantiles = 0  # initiate clean tile counter
+        for element in self.arr.flat:  # iterate over all array elements in 1D
+            if element == 1:  # clean tile found
+                cleantiles += 1  # add to the counter
+        return cleantiles
 
     def getRandomPosition(self):
         """
@@ -144,8 +163,7 @@ class RectangularRoom(object):
 
 # === Problem 2
 class Robot(object):
-    """
-    Represents a robot cleaning a particular room.
+    """Represents a robot cleaning a particular room.
 
     At all times the robot has a particular position and direction in the room.
     The robot also has a fixed speed.
@@ -153,10 +171,11 @@ class Robot(object):
     Subclasses of Robot should provide movement strategies by implementing
     updatePositionAndClean(), which simulates a single time-step.
     """
+
     def __init__(self, room, speed):
-        """
-        Initializes a Robot with the given speed in the specified room. The
-        robot initially has a random direction and a random position in the
+        """Initialize a Robot with the given speed in the specified room.
+
+        The robot initially has a random direction and a random position in the
         room. The robot cleans the tile it is on.
 
         room:  a RectangularRoom object.
@@ -171,7 +190,7 @@ class Robot(object):
         returns: a Position object giving the robot's position.
         """
         raise NotImplementedError
-    
+
     def getRobotDirection(self):
         """
         Return the direction of the robot.
@@ -204,7 +223,7 @@ class Robot(object):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError # don't change this!
+        raise NotImplementedError  # don't change this!
 
 
 # === Problem 3
@@ -216,6 +235,7 @@ class StandardRobot(Robot):
     direction; when it would hit a wall, it *instead* chooses a new direction
     randomly.
     """
+
     def updatePositionAndClean(self):
         """
         Simulate the passage of a single time-step.
@@ -330,3 +350,18 @@ def showPlot2(title, x_label, y_label):
 #
 #       (... your call here ...)
 #
+
+# simple test case for problem 1
+testposition = Position(2.1, 4.9)
+offposition = Position(3.1, 4.1)
+testroom = RectangularRoom(5, 5)
+print('the current test room is: ')
+print(testroom)
+print('initiating tile clean at: ', testposition)
+testroom.cleanTileAtPosition(testposition)
+print('cleaning complete. testroom now looks like this :')
+print(testroom)
+print('beginning tile clean check on the test position')
+print(testroom.isTileCleaned(testposition.x, testposition.y))
+print('beginning tile clean check on the off position')
+print(testroom.isTileCleaned(offposition.x, offposition.y))
