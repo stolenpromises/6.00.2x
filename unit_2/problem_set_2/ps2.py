@@ -12,11 +12,11 @@ Created on Sat May 29 19:53:33 2021
 
 # 6.00.2x Problem Set 2: Simulating robots
 
+
 import math
 import random
 import ps2_visualize
 import pylab
-import numpy as np
 
 # For Python 3.6:
 from ps2_verify_movement36 import testRobotMovement
@@ -69,6 +69,12 @@ class Position(object):
     def __str__(self):
         """Enable the current position to be printed."""
         return "(%0.2f, %0.2f)" % (self.x, self.y)
+
+
+# a fix for the online grader's ability to import numpy
+import os
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+import numpy as np
 
 
 # === Problem 1
@@ -149,7 +155,9 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        raise NotImplementedError
+        random_x = random.uniform(0, self.width)  # assign a random x position
+        random_y = random.uniform(0, self.height)  # assign a random y position
+        return Position(random_x, random_y)  # return a position object
 
     def isPositionInRoom(self, pos):
         """
@@ -158,7 +166,11 @@ class RectangularRoom(object):
         pos: a Position object.
         returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        if 0 <= pos.x < self.width:  # check x within width
+            if 0 <= pos.y < self.height:  # check y within height
+                return True  # pos is in the room
+        else:
+            return False  # pos is outside of the room
 
 
 # === Problem 2
@@ -365,3 +377,12 @@ print('beginning tile clean check on the test position')
 print(testroom.isTileCleaned(testposition.x, testposition.y))
 print('beginning tile clean check on the off position')
 print(testroom.isTileCleaned(offposition.x, offposition.y))
+print('test random position object is:')
+print(testroom.getRandomPosition())
+outsideposition = Position(6, 6)
+print('test outsideposition object is:')
+print(outsideposition)
+print('testing if outside position is within testroom:')
+print(testroom.isPositionInRoom(outsideposition))
+print('testing if random positionobject is within testroom:')
+print(testroom.isPositionInRoom(testroom.getRandomPosition()))
