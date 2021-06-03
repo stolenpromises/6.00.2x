@@ -29,6 +29,8 @@ Below are three types of links:
     * [Stochastic processes](https://1drv.ms/u/s!ApsU6S6qm6qXg_VaFmMm2Ko6BNXYYA?wd=target%286.00.2x.one%7C9E0A2EBD-A05A-4B90-9E34-43DB6D91FCED%2Fstochastic%20processes%7CF33CD880-33AF-4DD9-B230-539AF7A1FF15%2F%29)
    * [Random Walks](https://1drv.ms/u/s!ApsU6S6qm6qXg_VaFmMm2Ko6BNXYYA?wd=target%286.00.2x.one%7C9E0A2EBD-A05A-4B90-9E34-43DB6D91FCED%2Frandom%20walks%7C1301E7AB-5580-4F53-8B66-2659577600CB%2F%29)
   * [Problem Set 2](https://github.com/stolenpromises/6.00.2x/tree/main/unit_2/problem_set_2)
+    * [Numpy](https://numpy.org/doc/stable/user/whatisnumpy.html): [Creation](https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros), [Iteration](https://numpy.org/doc/stable/reference/arrays.nditer.html), 
+    *
   
 ## Ancilliary Learning
 
