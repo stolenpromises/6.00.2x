@@ -40,7 +40,6 @@ class Position(object):
 
     def getY(self):
         """Return y position."""
-        print('gety called')
         return self.y
 
     def getNewPosition(self, angle, speed):
@@ -73,8 +72,8 @@ class Position(object):
 
 
 # a fix for the online grader's ability to import numpy
-import os
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
+#import os
+#os.environ["OPENBLAS_NUM_THREADS"] = "1"
 import numpy as np
 import abc
 
@@ -195,10 +194,11 @@ class Robot(object):
         speed: a float (speed > 0)
         """
         #__metaclass__ = abc.ABCMeta
-        self.RobotPosition = room.getRandomPosition()  # random position
-        room.cleanTileAtPosition(self.RobotPosition)  # clean position in room
-        self.RobotDirection = random.uniform(0, 360)
-        self.RobotSpeed = speed
+        self.room = room  # assign the room which was passed in
+        self.position = room.getRandomPosition()  # assign random position
+        room.cleanTileAtPosition(self.position)  # clean position in room
+        self.angle = random.uniform(0, 360)  # assign a direction
+        self.speed = speed  # assign speed
 
     def getRobotPosition(self):
         """
@@ -206,7 +206,7 @@ class Robot(object):
 
         returns: a Position object giving the robot's position.
         """
-        return self.RobotPosition
+        return self.position
 
     def getRobotDirection(self):
         """
@@ -215,7 +215,7 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        return self.RobotDirection
+        return self.angle
 
     def setRobotPosition(self, position):
         """
@@ -223,7 +223,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        self.RobotPosition = position
+        self.position = position
 
     def setRobotDirection(self, direction):
         """
@@ -231,7 +231,7 @@ class Robot(object):
 
         direction: integer representing an angle in degrees
         """
-        self.RobotDirection = direction
+        self.angle = direction
 
     def updatePositionAndClean(self):
         """
@@ -260,11 +260,26 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
-
+        # establish a target destination
+        destination = self.position.getNewPosition(self.angle, self.speed)
+        # check the destination against the room
+        if self.room.isPositionInRoom(destination) is True:
+            self.setRobotPosition(destination)  # move to the destination
+            # position variables for readability and float round for grader
+            x = math.floor(destination.getX())
+            y = math.floor(destination.getY())
+            if self.room.isTileCleaned(x, y) is False:  # check for dirt
+                self.room.cleanTileAtPosition(destination)  # clean the tile
+        else:  # the destination falls outside the room
+            self.angle = random.uniform(0, 360)  # set a new random angle
+        print('number of cleaned tiles is ', self.room.getNumCleanedTiles())
+        print('remaining: ', abs(int(self.room.getNumCleanedTiles()) - self.room.getNumTiles()))
+    # loop until the room is clean
+    #while self.room.getNumCleanedTiles() < Robot.room.getNumTiles():
+        #Robot.updatePositionAndClean()
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-##testRobotMovement(StandardRobot, RectangularRoom)
+testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -379,6 +394,7 @@ testroom.cleanTileAtPosition(testposition)
 print('cleaning complete. testroom now looks like this :')
 print(testroom)
 print('beginning tile clean check on the test position')
+print('test position x, y is ', testposition.getX(), testposition.getY())
 print(testroom.isTileCleaned(testposition.x, testposition.y))
 print('beginning tile clean check on the off position')
 print(testroom.isTileCleaned(offposition.x, offposition.y))
