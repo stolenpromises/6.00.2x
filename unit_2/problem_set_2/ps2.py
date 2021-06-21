@@ -17,6 +17,7 @@ import math
 import random
 import ps2_visualize
 import pylab
+import abc
 
 # For Python 3.6:
 from ps2_verify_movement36 import testRobotMovement
@@ -75,7 +76,7 @@ class Position(object):
 import os
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 import numpy as np
-
+import abc
 
 # === Problem 1
 class RectangularRoom(object):
@@ -193,7 +194,11 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        raise NotImplementedError
+        #__metaclass__ = abc.ABCMeta
+        self.RobotPosition = room.getRandomPosition()  # random position
+        room.cleanTileAtPosition(self.RobotPosition)  # clean position in room
+        self.RobotDirection = random.uniform(0, 360)
+        self.RobotSpeed = speed
 
     def getRobotPosition(self):
         """
@@ -201,7 +206,7 @@ class Robot(object):
 
         returns: a Position object giving the robot's position.
         """
-        raise NotImplementedError
+        return self.RobotPosition
 
     def getRobotDirection(self):
         """
@@ -210,7 +215,7 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        raise NotImplementedError
+        return self.RobotDirection
 
     def setRobotPosition(self, position):
         """
@@ -218,7 +223,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.RobotPosition = position
 
     def setRobotDirection(self, direction):
         """
@@ -226,7 +231,7 @@ class Robot(object):
 
         direction: integer representing an angle in degrees
         """
-        raise NotImplementedError
+        self.RobotDirection = direction
 
     def updatePositionAndClean(self):
         """
@@ -386,3 +391,7 @@ print('testing if outside position is within testroom:')
 print(testroom.isPositionInRoom(outsideposition))
 print('testing if random positionobject is within testroom:')
 print(testroom.isPositionInRoom(testroom.getRandomPosition()))
+
+# problem 2 test cases
+robot = Robot(RectangularRoom(1, 2), 1.0)
+robot.getRobotPosition()
