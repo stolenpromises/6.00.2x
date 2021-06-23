@@ -77,6 +77,7 @@ class Position(object):
 import numpy as np
 import abc
 
+
 # === Problem 1
 class RectangularRoom(object):
     """Represents a rectangular region containing clean or dirty tiles.
@@ -193,7 +194,6 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        #__metaclass__ = abc.ABCMeta
         self.room = room  # assign the room which was passed in
         self.position = room.getRandomPosition()  # assign random position
         room.cleanTileAtPosition(self.position)  # clean position in room
@@ -272,20 +272,16 @@ class StandardRobot(Robot):
                 self.room.cleanTileAtPosition(destination)  # clean the tile
         else:  # the destination falls outside the room
             self.angle = random.uniform(0, 360)  # set a new random angle
-        print('number of cleaned tiles is ', self.room.getNumCleanedTiles())
-        print('remaining: ', abs(int(self.room.getNumCleanedTiles()) - self.room.getNumTiles()))
-    # loop until the room is clean
-    #while self.room.getNumCleanedTiles() < Robot.room.getNumTiles():
-        #Robot.updatePositionAndClean()
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-testRobotMovement(StandardRobot, RectangularRoom)
+# testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
 def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
                   robot_type):
-    """
+    """Return mean time-steps for a robot type.
+
     Runs NUM_TRIALS trials of the simulation and returns the mean number of
     time-steps needed to clean the fraction MIN_COVERAGE of the room.
 
@@ -301,11 +297,39 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 RandomWalkRobot)
     """
-    raise NotImplementedError
-
+# =============================================================================
+#     num_robots = 2
+#     num_trials = 10
+#     num_robots = 3
+#     width = 20
+#     height = 20
+#     speed = 10
+#     min_coverage = 1
+# =============================================================================
+    trial_outcomes = {}  # dict of trial:time_steps
+    # loop over each trial
+    for trial in range(num_trials):
+        room = RectangularRoom(width, height)
+        robot_pack = {}  # initiate an empty robot pack
+        for num in range(num_robots):  # build pack of robot position objects
+            robot_pack[num] = robot_type(room, speed)  # iterative dict add
+        time_steps = 0  # time step counter
+        # advance the pack till cleaning coverage is reached
+        while room.getNumCleanedTiles() < min_coverage*room.getNumTiles():
+            time_steps += 1  # add 1 tick to the timer
+            for robot in robot_pack:  # loop over the pack
+                robot_pack[robot].updatePositionAndClean()  # advance
+                # break if cleaning threshold is reached
+                if room.getNumCleanedTiles() >= min_coverage*room.getNumTiles():
+                    break
+        trial_outcomes[trial] = time_steps  # trial complete, append result
+    time_step_sum = 0  # initiate a sum
+    for trial in trial_outcomes:
+        time_step_sum += trial_outcomes[trial]  # append a trial outcome
+    return time_step_sum / num_trials  # return the average
+# =============================================================================
 # Uncomment this line to see how much your simulation takes on average
-##print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
-
+#print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
 
 # === Problem 5
 class RandomWalkRobot(Robot):
@@ -383,31 +407,33 @@ def showPlot2(title, x_label, y_label):
 #       (... your call here ...)
 #
 
-# simple test case for problem 1
-testposition = Position(2.1, 4.9)
-offposition = Position(3.1, 4.1)
-testroom = RectangularRoom(5, 5)
-print('the current test room is: ')
-print(testroom)
-print('initiating tile clean at: ', testposition)
-testroom.cleanTileAtPosition(testposition)
-print('cleaning complete. testroom now looks like this :')
-print(testroom)
-print('beginning tile clean check on the test position')
-print('test position x, y is ', testposition.getX(), testposition.getY())
-print(testroom.isTileCleaned(testposition.x, testposition.y))
-print('beginning tile clean check on the off position')
-print(testroom.isTileCleaned(offposition.x, offposition.y))
-print('test random position object is:')
-print(testroom.getRandomPosition())
-outsideposition = Position(6, 6)
-print('test outsideposition object is:')
-print(outsideposition)
-print('testing if outside position is within testroom:')
-print(testroom.isPositionInRoom(outsideposition))
-print('testing if random positionobject is within testroom:')
-print(testroom.isPositionInRoom(testroom.getRandomPosition()))
-
-# problem 2 test cases
-robot = Robot(RectangularRoom(1, 2), 1.0)
-robot.getRobotPosition()
+# =============================================================================
+# # simple test case for problem 1
+# testposition = Position(2.1, 4.9)
+# offposition = Position(3.1, 4.1)
+# testroom = RectangularRoom(5, 5)
+# print('the current test room is: ')
+# print(testroom)
+# print('initiating tile clean at: ', testposition)
+# testroom.cleanTileAtPosition(testposition)
+# print('cleaning complete. testroom now looks like this :')
+# print(testroom)
+# print('beginning tile clean check on the test position')
+# print('test position x, y is ', testposition.getX(), testposition.getY())
+# print(testroom.isTileCleaned(testposition.x, testposition.y))
+# print('beginning tile clean check on the off position')
+# print(testroom.isTileCleaned(offposition.x, offposition.y))
+# print('test random position object is:')
+# print(testroom.getRandomPosition())
+# outsideposition = Position(6, 6)
+# print('test outsideposition object is:')
+# print(outsideposition)
+# print('testing if outside position is within testroom:')
+# print(testroom.isPositionInRoom(outsideposition))
+# print('testing if random positionobject is within testroom:')
+# print(testroom.isPositionInRoom(testroom.getRandomPosition()))
+# 
+# # problem 2 test cases
+# robot = Robot(RectangularRoom(1, 2), 1.0)
+# robot.getRobotPosition()
+# =============================================================================
