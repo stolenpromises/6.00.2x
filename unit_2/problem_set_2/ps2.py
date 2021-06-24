@@ -376,10 +376,10 @@ def showPlot1(title, x_label, y_label):
 
 
 def showPlot2(title, x_label, y_label):
-    """2 standard vs random walk robots time steps in rooms of various size.
+    """2 standard vs random walk robots time to clean rooms of various sizes.
 
-    X axis: Mean time steps
-    room
+    X axis: Room aspect ratio
+    Y axis: Mean time steps
     """
     aspect_ratios = []
     times1 = []
@@ -410,13 +410,15 @@ def showPlot2(title, x_label, y_label):
 # 2) Write a function call to showPlot2 that generates an appropriately-labeled
 #     plot.
 #
-showPlot2('Mean time steps for a pack of 2 standard vs random walk robots '
-          'in various sized rooms', 'Room aspect ratio', 'mean time steps')
+#showPlot2('Mean time steps for a pack of 2 standard vs random walk robots '
+#          'in various sized rooms', 'Room aspect ratio', 'mean time steps')
 # =============================================================================
 
 
 # =============================================================================
-# # simple test case for problem 1
+# = test cases
+
+# == problem 1
 # testposition = Position(2.1, 4.9)
 # offposition = Position(3.1, 4.1)
 # testroom = RectangularRoom(5, 5)
@@ -440,8 +442,9 @@ showPlot2('Mean time steps for a pack of 2 standard vs random walk robots '
 # print(testroom.isPositionInRoom(outsideposition))
 # print('testing if random positionobject is within testroom:')
 # print(testroom.isPositionInRoom(testroom.getRandomPosition()))
-# 
-# # problem 2 test cases
+
+# == problem 2
 # robot = Robot(RectangularRoom(1, 2), 1.0)
 # robot.getRobotPosition()
+
 # =============================================================================
