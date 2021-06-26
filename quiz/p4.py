@@ -21,7 +21,7 @@ def max_contig_sum(L):
             sendlist.append(e_next)  # append the next element
             list_of_lists.append(tuple(sendlist))  # append the sendlist
 
-    # computer all subsets, find the maximum contiguous sequence
+    # compute all subsets, find the maximum contiguous sequence
     champion = 0
     for subset in list_of_lists:  # iterate of the list of lists
         contendor = 0
