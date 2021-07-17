@@ -13,7 +13,7 @@ def solveit(test):
     Assumes there exists an int, x, such that test(x) is True
 
     Returns an int, x, with the smallest absolute value such that test(x) is
-    True.In case of ties, return any one of them.
+    True. In case of ties, return any one of them.
     """
     # begin counting from 0
     count = 0
@@ -22,6 +22,7 @@ def solveit(test):
     count = 1
     while test(count) is not True:  # keep counting till we break or solve
         if test(count*-1) is True:  # check for a negative solution
+            count = count*-1  # apply the negative
             break  # break out if the negative works
         count += 1  # add to the count
     return count
