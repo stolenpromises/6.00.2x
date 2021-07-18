@@ -42,5 +42,5 @@ def stdDevOfLengths(L):
 
 # TEST CASES
 L = ['a', 'z', 'p']
-#L = ['apples', 'oranges', 'kiwis', 'pineapples']
+# L = ['apples', 'oranges', 'kiwis', 'pineapples']
 print(stdDevOfLengths(L))
